@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PhotoModule } from './model/photo/photo.module';
+import { HotelModule } from './entity/hotel/hotel.module';
 
 @Module({
   imports: [
-    PhotoModule,
+    HotelModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -21,4 +21,5 @@ import { PhotoModule } from './model/photo/photo.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+}
