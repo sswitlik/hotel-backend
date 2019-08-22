@@ -9,7 +9,7 @@ export class Hotel extends BaseEntity {
   @Column('text')
   description: string;
 
-  @OneToMany(type => Room, room => room.hotel)
+  @OneToMany(type => Room, room => room.hotel, { cascade: true })
   rooms: Room[];
 
   @ManyToMany(type => HotelLocation, location => location.hotels)
