@@ -4,9 +4,13 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HotelModule } from './entity/hotel/hotel.module';
 import { TravelProductModule } from './entity/travel-product/travel-product.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
+    UsersModule,
+    AuthModule,
     HotelModule,
     TravelProductModule,
     TypeOrmModule.forRoot({
