@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { PurchaseModule } from './entity/purchase/purchase.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './modules/auth/role.guard';
+import { ClientModule } from './entity/client/client.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RolesGuard } from './modules/auth/role.guard';
     AuthModule,
     HotelModule,
     TravelProductModule,
+    ClientModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',

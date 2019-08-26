@@ -4,8 +4,7 @@ import { PurchaseService } from './purchase.service';
 import { Purchase } from './purchase.entity';
 import { Request } from 'express';
 import { AuthService } from '../../modules/auth/auth.service';
-import { Roles } from '../../modules/auth/role.guard';
-import { UserRole } from '../../modules/users/users.service';
+import { BuyProductInput } from '../../../dist/entity/purchase/_additionals/buy-product-input.model';
 
 @Crud({
   model: {
@@ -13,13 +12,13 @@ import { UserRole } from '../../modules/users/users.service';
   },
   query: {
     join: {
-      hotels: {
-        eager: true,
-      },
       accomodations: {
         eager: true,
       },
       rooms: {
+        eager: true,
+      },
+      product: {
         eager: true,
       },
     },
@@ -32,25 +31,27 @@ export class PurchaseController {
   }
 
   @Post('buy-product')
-  @Roles(UserRole.ADMIN)
-  buyProduct(@Req() req: Request, @Headers('authorization') bearer: string) {
-    const mockPurchaseInput: Purchase = {
-      // min 1; sum == participants
-      rooms: [],
-      // find
-      product: null,
-      termFrom: new Date(),
-      termTo: new Date(),
-      // findOrCreate
-      client: null,
-      // min 1;
-      participants: [],
-      // start: reservation
-      status: '',
-      id: undefined,
+  buyProduct(@Req() request: Request, @Headers('authorization') bearer: string) {
+    const mockPurchaseInput: BuyProductInput = {
+      clientData: null,
+      purchase: {
+        // min 1; sum == participants; must be in product
+        rooms: [],
+        product: null,
+        // must be free space in term
+        termFrom: new Date(),
+        termTo: new Date(),
+        // findOrCreate
+        client: null,
+        // min 1;
+        participants: [],
+        // start: reservation
+        status: '',
+        id: undefined,
+      },
     };
 
-    // console.log(this.authService.getUserRoles(bearer));
-    // this.service.
+    console.log(request.body);
+    return this.service.buyProduct(request.body);
   }
 }

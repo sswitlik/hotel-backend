@@ -4,13 +4,13 @@ import { Purchase } from '../purchase/purchase.entity';
 
 @Entity()
 export class Client extends BaseEntity {
-  @Column()
+  @Column({ nullable: true })
   address: string;
 
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
-  @OneToMany(type => Purchase, purchase => purchase.client)
+  @OneToMany(type => Purchase, purchase => purchase.client, { cascade: true })
   purchases: Purchase[];
 
 }
