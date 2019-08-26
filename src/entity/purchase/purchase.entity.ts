@@ -1,9 +1,10 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from '../_base/base.entity';
 import { Participant } from '../participant/participant.entity';
 import { DictionaryValue } from '../../modules/dictionary/dictionary-value.type';
 import { Client } from '../client/client.entity';
 import { TravelProduct } from '../travel-product/travel-product.entity';
+import { Room } from '../room/room.entity';
 
 @Entity()
 export class Purchase extends BaseEntity {
@@ -25,4 +26,7 @@ export class Purchase extends BaseEntity {
   @ManyToOne(type => TravelProduct, product => product.purchases)
   product: TravelProduct;
 
+  @ManyToMany(type => Room, room => room.purchases)
+  @JoinTable()
+  rooms: Room[];
 }

@@ -6,10 +6,14 @@ import { HotelModule } from './entity/hotel/hotel.module';
 import { TravelProductModule } from './entity/travel-product/travel-product.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { PurchaseModule } from './entity/purchase/purchase.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './modules/auth/role.guard';
 
 @Module({
   imports: [
     UsersModule,
+    PurchaseModule,
     AuthModule,
     HotelModule,
     TravelProductModule,
@@ -25,7 +29,13 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {
 }
