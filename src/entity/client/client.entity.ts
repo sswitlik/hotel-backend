@@ -10,7 +10,7 @@ export class Client extends BaseEntity {
   @Column({ nullable: true })
   email: string;
 
-  @OneToMany(type => Purchase, purchase => purchase.client, { cascade: true })
+  @OneToMany(type => Purchase, purchase => purchase.client)
   purchases: Purchase[];
 
 }

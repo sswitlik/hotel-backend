@@ -6,6 +6,7 @@ import { Client } from '../client/client.entity';
 import { Repository } from 'typeorm';
 import { PurchaseStatus } from '../../../dist/entity/purchase/_additionals/purchase-status.enum';
 import { BuyProductInput } from '../../../dist/entity/purchase/_additionals/buy-product-input.model';
+import { getWithDefault } from '../../modules/functions/get-with-default.function';
 
 @Injectable()
 export class PurchaseService extends TypeOrmCrudService<Purchase> {
@@ -16,12 +17,21 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
 
   async buyProduct(input: BuyProductInput) {
     // this.validatePurchaseInput(purchase)
-    input.purchase.status = PurchaseStatus.RESERVED;
-    const newlyPurchase = await this.clientRepo.save(input.purchase);
-    console.log(newlyPurchase);
-    if (!input.clientData) {
-      const client = await this.clientRepo.save({ purchases: [newlyPurchase] });
-      console.log(client);
+    let client = (await this.clientRepo.findByIds([getWithDefault(() => input.clientData.id)]))[0];
+    if (!client) {
+      client = await this.clientRepo.save(new Client());
+      console.log('new client');
     }
+
+    input.purchase.status = PurchaseStatus.RESERVED;
+    input.purchase.client = client;
+    const newlyPurchase = Object.assign(new Purchase(), input.purchase);
+    await this.repo.save(newlyPurchase);
+    // console.log(newlyPurchase);
+
+    return {
+      purchase: newlyPurchase,
+      clientData: client,
+    };
   }
 }

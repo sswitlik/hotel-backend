@@ -25,7 +25,7 @@ import { ClientModule } from './entity/client/client.module';
       port: 5432,
       username: 'postgres',
       password: 'admin',
-      database: 'postgres',
+      database: 'hotels',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),

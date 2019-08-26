@@ -20,7 +20,7 @@ export class Purchase extends BaseEntity {
   @Column()
   status: PurchaseStatus;
 
-  @ManyToOne(type => Client, client => client.purchases)
+  @ManyToOne(type => Client, client => client.purchases, { cascade: true })
   client: Client;
 
   @ManyToOne(type => TravelProduct, product => product.purchases)
