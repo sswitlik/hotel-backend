@@ -1,10 +1,9 @@
 import { Crud } from '@nestjsx/crud';
-import { Controller, Headers, Post, Req } from '@nestjs/common';
+import { Body, Controller, Headers, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
 import { Purchase } from './purchase.entity';
-import { Request } from 'express';
-import { AuthService } from '../../modules/auth/auth.service';
-import { BuyProductInput } from '../../../dist/entity/purchase/_additionals/buy-product-input.model';
+import { BuyProductInput } from './_additionals/buy-product-input.model';
+import { PurchaseStatus } from './_additionals/purchase-status.enum';
 
 @Crud({
   model: {
@@ -26,12 +25,12 @@ import { BuyProductInput } from '../../../dist/entity/purchase/_additionals/buy-
 })
 @Controller('purchase')
 export class PurchaseController {
-  constructor(public service: PurchaseService,
-              private authService: AuthService) {
+  constructor(public service: PurchaseService) {
   }
 
   @Post('buy-product')
-  buyProduct(@Req() request: Request, @Headers('authorization') bearer: string) {
+  @UsePipes(ValidationPipe)
+  buyProduct(@Body() body: BuyProductInput, @Headers('authorization') bearer: string) {
     const mockPurchaseInput: BuyProductInput = {
       clientData: null,
       purchase: {
@@ -46,12 +45,12 @@ export class PurchaseController {
         // min 1;
         participants: [],
         // start: reservation
-        status: '',
+        status: PurchaseStatus.RESERVED,
         id: undefined,
       },
     };
 
-    console.log(request.body);
-    return this.service.buyProduct(request.body);
+    console.log(body);
+    return this.service.buyProduct(body);
   }
 }

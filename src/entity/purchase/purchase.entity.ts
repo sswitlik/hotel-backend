@@ -4,16 +4,24 @@ import { Participant } from '../participant/participant.entity';
 import { Client } from '../client/client.entity';
 import { TravelProduct } from '../travel-product/travel-product.entity';
 import { Room } from '../room/room.entity';
-import { PurchaseStatus } from '../../../dist/entity/purchase/purchase-status.enum';
+import { PurchaseStatus } from './_additionals/purchase-status.enum';
+import { IsDate, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
 
 @Entity()
 export class Purchase extends BaseEntity {
+
+  @MinLength(1)
   @OneToMany(type => Participant, participant => participant.purchase)
   participants: Participant[];
 
+  @IsDate()
+  @Type(() => Date)
   @Column({ nullable: true })
   termFrom: Date;
 
+  @IsDate()
+  @Type(() => Date)
   @Column({ nullable: true })
   termTo: Date;
 

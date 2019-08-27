@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,7 +7,7 @@ import { TravelProductModule } from './entity/travel-product/travel-product.modu
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PurchaseModule } from './entity/purchase/purchase.module';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { RolesGuard } from './modules/auth/role.guard';
 import { ClientModule } from './entity/client/client.module';
 
@@ -36,6 +36,10 @@ import { ClientModule } from './entity/client/client.module';
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
     },
   ],
 })
