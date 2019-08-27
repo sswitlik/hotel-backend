@@ -21,7 +21,6 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
     let client = (await this.clientRepo.findByIds([getWithDefault(() => input.clientData.id)]))[0];
     if (!client) {
       client = await this.clientRepo.save(Object.assign(new Client(), input.clientData));
-      console.log('new client');
     }
 
     input.purchase.status = PurchaseStatus.RESERVED;

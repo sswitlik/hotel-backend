@@ -1,14 +1,13 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 import { Purchase } from '../purchase.entity';
 
-@ValidatorConstraint({ name: 'AreRoomsInProduct', async: false })
-export class AreRoomsInProductValidator implements ValidatorConstraintInterface {
+@ValidatorConstraint({ name: 'IsEnoughSpaceForParticipants', async: false })
+export class IsEnoughSpaceForParticipantsValidator implements ValidatorConstraintInterface {
 
   validate(group: Purchase, args: ValidationArguments) {
+    const { participants, rooms } = group;
     try {
-      const { product, rooms } = group;
-      // works only for hotels (due to accomodations[0])
-      return rooms.every(room => room.hotel.region.id === product.accomodations[0].region.id);
+      return rooms.reduce((prev, curr) => prev + curr.personNumber, 0) >= participants.length;
     } catch (e) {
       console.error(e);
       return false;
@@ -16,7 +15,7 @@ export class AreRoomsInProductValidator implements ValidatorConstraintInterface 
   }
 
   defaultMessage(args: ValidationArguments) { // here you can provide default error message if validation failed
-    return 'Each room must be in hotel of selected region';
+    return 'Sum of rooms space must grater or equal than number of participants';
   }
 
 }

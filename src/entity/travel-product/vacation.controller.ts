@@ -9,10 +9,10 @@ import { Vacation } from './vacation.entity';
   },
   query: {
     join: {
-      hotels: {
+      accomodations: {
         eager: true,
       },
-      accomodations: {
+      'accomodations.region': {
         eager: true,
       },
     },

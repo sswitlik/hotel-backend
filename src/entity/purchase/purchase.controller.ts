@@ -50,7 +50,6 @@ export class PurchaseController {
       },
     };
 
-    console.log(body);
     return this.service.buyProduct(body);
   }
 }

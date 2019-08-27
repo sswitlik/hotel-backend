@@ -57,7 +57,6 @@ export class PhotoService {
         return this.photoRepository.save(photo);
       })
       .then(res => {
-        console.log(res);
         return this.photoMetadataRepository.save(metadata);
       });
   }

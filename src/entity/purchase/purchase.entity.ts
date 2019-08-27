@@ -5,14 +5,14 @@ import { Client } from '../client/client.entity';
 import { TravelProduct } from '../travel-product/travel-product.entity';
 import { Room } from '../room/room.entity';
 import { PurchaseStatus } from './_additionals/purchase-status.enum';
-import { IsDate, MinLength } from 'class-validator';
+import { ArrayMinSize, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
 
 @Entity()
 export class Purchase extends BaseEntity {
 
-  @MinLength(1)
-  @OneToMany(type => Participant, participant => participant.purchase)
+  @ArrayMinSize(1)
+  @OneToMany(type => Participant, participant => participant.purchase, { cascade: true })
   participants: Participant[];
 
   @IsDate()
@@ -35,6 +35,7 @@ export class Purchase extends BaseEntity {
   @JoinTable()
   product: TravelProduct;
 
+  @ArrayMinSize(1)
   @ManyToMany(type => Room, room => room.purchases)
   @JoinTable()
   rooms: Room[];
