@@ -1,9 +1,11 @@
 import { Crud } from '@nestjsx/crud';
-import { Body, Controller, Headers, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Headers, HttpStatus, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
 import { Purchase } from './purchase.entity';
 import { BuyProductInput } from './_additionals/buy-product-input.model';
 import { PurchaseStatus } from './_additionals/purchase-status.enum';
+import { Response } from 'express';
+import { ResponseModel } from '../../modules/response/response.model';
 
 @Crud({
   model: {
@@ -30,7 +32,7 @@ export class PurchaseController {
 
   @Post('buy-product')
   @UsePipes(ValidationPipe)
-  buyProduct(@Body() body: BuyProductInput, @Headers('authorization') bearer: string) {
+  async buyProduct(@Body() body: BuyProductInput, @Headers('authorization') bearer: string, @Res() res: Response) {
     const mockPurchaseInput: BuyProductInput = {
       clientData: null,
       purchase: {
@@ -50,6 +52,10 @@ export class PurchaseController {
       },
     };
 
-    return this.service.buyProduct(body);
+    try {
+      res.send(await this.service.buyProduct(body));
+    } catch (e) {
+      res.status(HttpStatus.BAD_REQUEST).send(ResponseModel.BadRequestResponse(e.message));
+    }
   }
 }

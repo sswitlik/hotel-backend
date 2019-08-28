@@ -12,6 +12,10 @@ import { IsFutureValidator } from '../../modules/validators/is-future.validator'
 @Entity()
 export class Purchase extends BaseEntity {
 
+  static isCollision(purchase1: Purchase, purchase2: Purchase) {
+    return !(purchase1.termFrom > purchase2.termTo || purchase1.termTo < purchase2.termFrom);
+  }
+
   @ArrayMinSize(1)
   @OneToMany(type => Participant, participant => participant.purchase, { cascade: true })
   participants: Participant[];

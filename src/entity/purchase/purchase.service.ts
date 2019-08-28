@@ -8,6 +8,7 @@ import { BuyProductInput } from './_additionals/buy-product-input.model';
 import { RoomService } from '../room/room.service';
 import { getWithDefault } from '../../modules/functions/get-with-default.function';
 import { PurchaseStatus } from './_additionals/purchase-status.enum';
+import { Room } from '../room/room.entity';
 
 @Injectable()
 export class PurchaseService extends TypeOrmCrudService<Purchase> {
@@ -18,7 +19,7 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
   }
 
   async buyProduct(input: BuyProductInput) {
-    return this.validatePurchaseInput(input);
+    await this.validatePurchaseInput(input);
 
     let client = (await this.clientRepo.findByIds([getWithDefault(() => input.clientData.id)]))[0];
     if (!client) {
@@ -29,7 +30,6 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
     input.purchase.client = client;
     const newlyPurchase = Object.assign(new Purchase(), input.purchase);
     await this.repo.save(newlyPurchase);
-    // console.log(newlyPurchase);
 
     return {
       purchase: newlyPurchase,
@@ -38,14 +38,16 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
   }
 
   private async validatePurchaseInput(input: BuyProductInput) {
-    const roomPurchases = await this.roomService.getRoomsWithFuturePurchases(input.purchase.rooms.map(room => room.id));
-    console.log(roomPurchases);
-    console.log(input.purchase.termFrom, input.purchase.termTo);
-
     const purchase = input.purchase;
-    // if (getWithDefault(() => purchase.participants.length) < 1) {
-    //   throw new Error('Must be at least one participant');
-    // }
-    return roomPurchases;
+
+    const selectedRooms: Room[] = await this.roomService.getRoomsWithFuturePurchases(input.purchase.rooms.map(room => room.id));
+    const roomsOk = !selectedRooms.some(room => {
+      return room.purchases.some(roomPurchase => Purchase.isCollision(purchase, roomPurchase));
+    });
+    if (!roomsOk) {
+      throw new Error('Validation: Room is not free in this term');
+    }
+
+    return selectedRooms;
   }
 }
