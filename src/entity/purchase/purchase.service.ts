@@ -40,6 +40,8 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
   private async validatePurchaseInput(input: BuyProductInput) {
     const roomPurchases = await this.roomService.getRoomsWithFuturePurchases(input.purchase.rooms.map(room => room.id));
     console.log(roomPurchases);
+    console.log(input.purchase.termFrom, input.purchase.termTo);
+
     const purchase = input.purchase;
     // if (getWithDefault(() => purchase.participants.length) < 1) {
     //   throw new Error('Must be at least one participant');

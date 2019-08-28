@@ -5,8 +5,9 @@ import { Client } from '../client/client.entity';
 import { TravelProduct } from '../travel-product/travel-product.entity';
 import { Room } from '../room/room.entity';
 import { PurchaseStatus } from './_additionals/purchase-status.enum';
-import { ArrayMinSize, IsDate } from 'class-validator';
+import { ArrayMinSize, IsDate, Validate } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsFutureValidator } from '../../modules/validators/is-future.validator';
 
 @Entity()
 export class Purchase extends BaseEntity {
@@ -16,11 +17,13 @@ export class Purchase extends BaseEntity {
   participants: Participant[];
 
   @IsDate()
+  @Validate(IsFutureValidator)
   @Type(() => Date)
   @Column({ nullable: true })
   termFrom: Date;
 
   @IsDate()
+  @Validate(IsFutureValidator)
   @Type(() => Date)
   @Column({ nullable: true })
   termTo: Date;
