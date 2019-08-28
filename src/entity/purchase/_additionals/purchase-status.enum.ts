@@ -5,3 +5,5 @@ export enum PurchaseStatus {
   CANCELLED = 'CANCELLED',
   EXECUTED = 'EXECUTED',
 }
+
+export const activePurchaseStatuses = [PurchaseStatus.PAID, PurchaseStatus.RESERVED];

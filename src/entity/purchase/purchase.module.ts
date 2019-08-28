@@ -5,11 +5,12 @@ import { PurchaseController } from './purchase.controller';
 import { PurchaseService } from './purchase.service';
 import { AuthModule } from '../../modules/auth/auth.module';
 import { Client } from '../client/client.entity';
-import { Room } from '../room/room.entity';
+import { RoomModule } from '../room/room.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Purchase, Client, Room]),
+    RoomModule,
+    TypeOrmModule.forFeature([Purchase, Client]),
     AuthModule,
   ],
   controllers: [PurchaseController],
