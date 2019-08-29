@@ -1,10 +1,13 @@
-import { ChildEntity, JoinTable, ManyToMany } from 'typeorm';
+import { Entity, OneToMany } from 'typeorm';
 import { TravelProduct } from './travel-product.entity';
-import { Hotel } from '../hotel/hotel.entity';
+import { Purchase } from '../purchase/purchase.entity';
+import { Accomodation } from '../accomodation/accomodation.entity';
 
-@ChildEntity()
+@Entity()
 export class Vacation extends TravelProduct {
-  @ManyToMany(type => Hotel, hotel => hotel.vacations)
-  @JoinTable()
-  hotels: Hotel[];
+  @OneToMany(type => Purchase, purchase => purchase.product)
+  purchases: Purchase[];
+
+  @OneToMany(type => Accomodation, accomodation => accomodation.product, { cascade: true })
+  accomodations: Accomodation[];
 }

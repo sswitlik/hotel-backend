@@ -2,7 +2,6 @@ import { BaseEntity } from '../_base/base.entity';
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { Room } from '../room/room.entity';
 import { HotelLocation } from './_additionals/hotel-location.entity';
-import { Vacation } from '../travel-product/vacation.entity';
 import { Region } from '../region/region.entity';
 
 @Entity()
@@ -17,8 +16,8 @@ export class Hotel extends BaseEntity {
   @JoinTable()
   locations: HotelLocation[];
 
-  @ManyToMany(type => Vacation, vacation => vacation.hotels)
-  vacations: Vacation[];
+  // @ManyToMany(type => Vacation, vacation => vacation.hotels)
+  // vacations: Vacation[];
 
   @ManyToOne(type => Region, region => region.hotels)
   region: Region;
