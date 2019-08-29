@@ -14,6 +14,9 @@ import { Crud } from '@nestjsx/crud';
       roles: {
         eager: true,
       },
+      client: {
+        eager: true,
+      },
     },
   },
 })

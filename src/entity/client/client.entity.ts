@@ -18,5 +18,5 @@ export class Client extends BaseEntity {
 
   @OneToOne(type => User)
   @JoinColumn()
-  profile: User;
+  user: User;
 }
