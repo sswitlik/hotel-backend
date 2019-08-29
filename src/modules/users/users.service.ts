@@ -1,4 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { User } from './user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from './_additionals/role.entity';
+import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 
 export enum UserRole {
   ANONYMUS = 'ANONYMUS',
@@ -6,41 +11,33 @@ export enum UserRole {
   ADMIN = 'ADMIN',
 }
 
-export interface User {
-  userId: number;
-  username: string;
-  password: string;
-  roles: UserRole[];
-}
-
 @Injectable()
-export class UsersService {
-  private readonly users: User[];
+export class UsersService extends TypeOrmCrudService<User> {
 
-  constructor() {
-    this.users = [
-      {
-        userId: 1,
-        username: 'john',
-        password: 'changeme',
-        roles: [UserRole.ADMIN],
-      },
-      {
-        userId: 2,
-        username: 'chris',
-        password: 'secret',
-        roles: [],
-      },
-      {
-        userId: 3,
-        username: 'maria',
-        password: 'guess',
-        roles: [],
-      },
-    ];
+  constructor(@InjectRepository(User) repo: Repository<User>) {
+    super(repo);
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+  async registerUser(user: User) {
+    await this.validateRegisterUser(user);
+
+    user.roles = [Role.instance<Role>({ name: UserRole.GUEST })];
+    return this.repo.save(user);
+  }
+
+  async findByUsername(username: string): Promise<User | undefined> {
+    return this.repo.createQueryBuilder('user')
+      .where('user.username = :username', { username })
+      .leftJoinAndSelect('user.roles', 'role')
+      .getOne();
+  }
+
+  private async validateRegisterUser(user: User) {
+    const userWithSameUsername = await this.repo.createQueryBuilder('user')
+      .where('user.username = :username', { username: user.username })
+      .getOne();
+    if (userWithSameUsername) {
+      throw new Error('username already in use');
+    }
   }
 }
