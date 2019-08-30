@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { Response } from 'express';
@@ -24,10 +24,11 @@ export class UsersController {
 
   @Post('register')
   async registerUser(@Body() body: User, @Res() res: Response) {
-    try {
-      res.send(await this.service.registerUser(body));
-    } catch (e) {
-      res.status(HttpStatus.BAD_REQUEST).send(ResponseModel.BadRequestResponse(e.message));
-    }
+    ResponseModel.tryCatch(res, () => this.service.registerUser(body));
+  }
+
+  @Post('register-employee')
+  async registerEmployee(@Body() body: User, @Res() res: Response) {
+    ResponseModel.tryCatch(res, () => this.service.registerEmployee(body));
   }
 }

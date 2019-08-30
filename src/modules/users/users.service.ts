@@ -9,6 +9,7 @@ export enum UserRole {
   ANONYMUS = 'ANONYMUS',
   GUEST = 'GUEST',
   ADMIN = 'ADMIN',
+  EMPLOYEE = 'EMPLOYEE'
 }
 
 @Injectable()
@@ -23,6 +24,14 @@ export class UsersService extends TypeOrmCrudService<User> {
     await this.validateRegisterUser(user);
 
     user.role = UserRole.GUEST;
+    return this.repo.save(user);
+  }
+
+  async registerEmployee(user: User) {
+    await this.validateRegisterUser(user);
+
+    user.role = UserRole.EMPLOYEE;
+    delete user.client;
     return this.repo.save(user);
   }
 
