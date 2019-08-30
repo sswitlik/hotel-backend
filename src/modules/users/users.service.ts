@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Role } from './_additionals/role.entity';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { ClientService } from '../../entity/client/client.service';
 
@@ -23,14 +22,13 @@ export class UsersService extends TypeOrmCrudService<User> {
   async registerUser(user: User) {
     await this.validateRegisterUser(user);
 
-    user.roles = [Role.instance<Role>({ name: UserRole.GUEST })];
+    user.role = UserRole.GUEST;
     return this.repo.save(user);
   }
 
   async findByUsername(username: string): Promise<User | undefined> {
     return this.repo.createQueryBuilder('user')
       .where('user.username = :username', { username })
-      .leftJoinAndSelect('user.roles', 'role')
       .getOne();
   }
 

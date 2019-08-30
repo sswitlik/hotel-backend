@@ -1,9 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToOne } from 'typeorm';
+import { Column, Entity, OneToOne } from 'typeorm';
 import { BaseEntity } from '../../entity/_base/base.entity';
-import { Role } from './_additionals/role.entity';
 import { IsString, ValidateNested } from 'class-validator';
 import { Client } from '../../entity/client/client.entity';
 import { Type } from 'class-transformer';
+import { UserRole } from './users.service';
 
 @Entity()
 export class User extends BaseEntity {
@@ -15,9 +15,8 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @ManyToMany(type => Role, role => role.users, { cascade: true })
-  @JoinTable()
-  roles: Role[];
+  @Column()
+  role: UserRole;
 
   @ValidateNested()
   @Type(type => Client)

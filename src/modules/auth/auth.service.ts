@@ -2,6 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { UserRole, UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 
+interface Payload {
+  username: string;
+  sub: any;
+  role: UserRole;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -20,17 +26,17 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId, _roles: user.roles.map(role => role.name) };
+    const payload: Payload = { username: user.username, sub: user.userId, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
-  getUserRoles(token: string): UserRole[] {
+  getUserRoles(token: string): UserRole {
     if (!token) {
-      return [];
+      return null;
     }
     const bearer = token.startsWith('Bearer') ? token.substring(7) : token;
-    return (this.jwtService.decode(bearer) as any).roles;
+    return (this.jwtService.decode(bearer) as Payload).role;
   }
 }

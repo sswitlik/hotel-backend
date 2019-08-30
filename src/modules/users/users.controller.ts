@@ -11,9 +11,6 @@ import { Crud } from '@nestjsx/crud';
   },
   query: {
     join: {
-      roles: {
-        eager: true,
-      },
       client: {
         eager: true,
       },

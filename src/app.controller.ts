@@ -2,6 +2,8 @@ import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './modules/auth/auth.service';
+import { Roles, RolesGuard } from './modules/auth/role.guard';
+import { UserRole } from './modules/users/users.service';
 
 @Controller()
 export class AppController {
@@ -20,7 +22,8 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.GUEST)
   @Get('me')
   getProfile(@Request() req) {
     return req.user;
