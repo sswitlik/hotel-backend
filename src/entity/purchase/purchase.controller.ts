@@ -32,7 +32,7 @@ export class PurchaseController {
 
   @Post('buy-product')
   @UsePipes(ValidationPipe)
-  // should validate: client - user - token
+  // TODO: should validate: client - user - token
   async buyProduct(@Body() body: BuyProductInput, @Headers('authorization') bearer: string, @Res() res: Response) {
     const mockPurchaseInput: BuyProductInput = {
       clientData: null,
