@@ -4,13 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { ClientService } from '../../entity/client/client.service';
-
-export enum UserRole {
-  ANONYMUS = 'ANONYMUS',
-  GUEST = 'GUEST',
-  ADMIN = 'ADMIN',
-  EMPLOYEE = 'EMPLOYEE'
-}
+import { UserRole } from './_additionals/user-role.enum';
 
 @Injectable()
 export class UsersService extends TypeOrmCrudService<User> {

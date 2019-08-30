@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserRole, UsersService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { UserRole } from '../users/_additionals/user-role.enum';
 
 interface Payload {
   username: string;

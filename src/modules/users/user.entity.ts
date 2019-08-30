@@ -3,7 +3,7 @@ import { BaseEntity } from '../../entity/_base/base.entity';
 import { IsString, ValidateNested } from 'class-validator';
 import { Client } from '../../entity/client/client.entity';
 import { Type } from 'class-transformer';
-import { UserRole } from './users.service';
+import { UserRole } from './_additionals/user-role.enum';
 
 @Entity()
 export class User extends BaseEntity {

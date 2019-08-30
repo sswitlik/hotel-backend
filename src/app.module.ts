@@ -8,7 +8,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PurchaseModule } from './entity/purchase/purchase.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
-import { RolesGuard } from './modules/auth/role.guard';
+import { RolesGuard } from './modules/auth/roles.guard';
 import { ClientModule } from './entity/client/client.module';
 
 @Module({

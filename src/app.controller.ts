@@ -2,8 +2,8 @@ import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './modules/auth/auth.service';
-import { Roles, RolesGuard } from './modules/auth/role.guard';
-import { UserRole } from './modules/users/users.service';
+import { Roles, RolesGuard } from './modules/auth/roles.guard';
+import { UserRole } from './modules/users/_additionals/user-role.enum';
 
 @Controller()
 export class AppController {
