@@ -16,6 +16,7 @@ export class UsersController {
   }
 
   @Post('register')
+  // activation link: Requirement 1.5
   async registerUser(@Body() body: User, @Res() res: Response) {
     ResponseModel.tryCatch(res, () => this.service.registerUser(body));
   }

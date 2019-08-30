@@ -1,5 +1,5 @@
 import { Crud } from '@nestjsx/crud';
-import { Body, Controller, Headers, HttpStatus, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Headers, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
 import { Purchase } from './purchase.entity';
 import { BuyProductInput } from './_additionals/buy-product-input.model';
@@ -32,6 +32,7 @@ export class PurchaseController {
 
   @Post('buy-product')
   @UsePipes(ValidationPipe)
+  // should validate: client - user - token
   async buyProduct(@Body() body: BuyProductInput, @Headers('authorization') bearer: string, @Res() res: Response) {
     const mockPurchaseInput: BuyProductInput = {
       clientData: null,
@@ -52,10 +53,6 @@ export class PurchaseController {
       },
     };
 
-    try {
-      res.send(await this.service.buyProduct(body));
-    } catch (e) {
-      res.status(HttpStatus.BAD_REQUEST).send(ResponseModel.BadRequestResponse(e.message));
-    }
+    ResponseModel.tryCatch(res, () => this.service.buyProduct(body));
   }
 }
