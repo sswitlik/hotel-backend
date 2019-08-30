@@ -8,6 +8,7 @@ import { ArrayMinSize, IsDate, Validate } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IsFutureValidator } from '../../modules/validators/is-future.validator';
 import { Vacation } from '../travel-product/vacation.entity';
+import { Payment } from '../payment/payment.entity';
 
 @Entity()
 export class Purchase extends BaseEntity {
@@ -46,4 +47,7 @@ export class Purchase extends BaseEntity {
   @ManyToMany(type => Room, room => room.purchases)
   @JoinTable()
   rooms: Room[];
+
+  @OneToMany(type => Payment, payment => payment.purchase)
+  payments: Payment[];
 }

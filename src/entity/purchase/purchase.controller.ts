@@ -50,6 +50,7 @@ export class PurchaseController {
         // start: reservation
         status: PurchaseStatus.RESERVED,
         id: undefined,
+        payments: [],
       },
     };
 
