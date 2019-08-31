@@ -8,7 +8,6 @@ import { BuyProductInput } from './_additionals/buy-product-input.model';
 import { RoomService } from '../room/room.service';
 import { getWithDefault } from '../../modules/functions/get-with-default.function';
 import { PurchaseStatus } from './_additionals/purchase-status.enum';
-import { Room } from '../room/room.entity';
 import { Vacation } from '../travel-product/vacation.entity';
 
 @Injectable()
@@ -21,8 +20,10 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
   }
 
   async buyProduct(input: BuyProductInput) {
-    console.log(await this.vacationRepo.findOne(input.purchase.product.id));
-    return null;
+    input.purchase.product = await this.vacationRepo.findOne(input.purchase.product.id);
+    input.purchase.rooms = await this.roomService.getRoomsWithFuturePurchases(input.purchase.rooms.map(room => room.id));
+    // return input;
+
     await this.validatePurchaseInput(input);
 
     let client = (await this.clientRepo.findByIds([getWithDefault(() => input.clientData.id)]))[0];
@@ -44,15 +45,23 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
 
   private async validatePurchaseInput(input: BuyProductInput) {
     const purchase = input.purchase;
+    const product = purchase.product;
+    const participants = purchase.participants;
+    const rooms = purchase.rooms;
 
-    const selectedRooms: Room[] = await this.roomService.getRoomsWithFuturePurchases(input.purchase.rooms.map(room => room.id));
-    const roomsOk = !selectedRooms.some(room => {
+    const roomsOk = !rooms.some(room => {
       return room.purchases.some(roomPurchase => Purchase.isCollision(purchase, roomPurchase));
     });
     if (!roomsOk) {
       throw new Error('Validation: Room is not free in this term');
     }
 
-    return selectedRooms;
+    if (!rooms.every(room => room.hotel.region.id === product.accomodations[0].region.id)) {
+      throw new Error('Validation: Each room must be in hotel of selected region');
+    }
+
+    if (!(rooms.reduce((prev, curr) => prev + curr.personNumber, 0) >= participants.length)) {
+      throw new Error('Validation: Sum of rooms space must grater or equal than number of participants');
+    }
   }
 }

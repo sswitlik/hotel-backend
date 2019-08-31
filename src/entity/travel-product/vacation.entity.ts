@@ -10,6 +10,6 @@ export class Vacation extends TravelProduct {
   purchases: Purchase[];
 
   @ArrayMinSize(1)
-  @OneToMany(type => Accomodation, accomodation => accomodation.product, { cascade: true })
+  @OneToMany(type => Accomodation, accomodation => accomodation.product, { cascade: true, eager: true })
   accomodations: Accomodation[];
 }

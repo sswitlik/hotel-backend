@@ -8,7 +8,7 @@ import { IsDefined } from 'class-validator';
 export class Accomodation extends BaseEntity {
 
   @IsDefined()
-  @ManyToOne(type => Region, region => region.accomodations)
+  @ManyToOne(type => Region, region => region.accomodations, { eager: true })
   region: Region;
 
   @ManyToOne(type => Vacation, product => product.accomodations)

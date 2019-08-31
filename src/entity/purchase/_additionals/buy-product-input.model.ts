@@ -3,14 +3,12 @@ import { Client } from '../../client/client.entity';
 import { Validate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { TermPeriodValidator } from './term-period.validator';
-import { AreRoomsInProductValidator } from './are-rooms-in-product.validator';
-import { IsEnoughSpaceForParticipantsValidator } from './is-enough-space-for-participants.validator';
 
 export class BuyProductInput {
   @ValidateNested()
   @Validate(TermPeriodValidator)
-  @Validate(AreRoomsInProductValidator)
-  @Validate(IsEnoughSpaceForParticipantsValidator)
+  // @Validate(AreRoomsInProductValidator)
+  // @Validate(IsEnoughSpaceForParticipantsValidator)
   @Type(() => Purchase)
   purchase: Purchase;
 

@@ -29,6 +29,6 @@ export class PaymentController {
 
   @Post('register-payment')
   registerPayment(@Body() body: Payment) {
-    this.service.registerPayment(body);
+    return this.service.registerPayment(body);
   }
 }

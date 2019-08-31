@@ -14,7 +14,7 @@ export class ResponseModel {
     try {
       res.send(await success());
     } catch (e) {
-      res.status(HttpStatus.BAD_REQUEST).send(ResponseModel.BadRequestResponse(e.message));
+      res.status(HttpStatus.BAD_REQUEST).send(ResponseModel.BadRequestResponse(e.message + e.stack));
     }
   }
 }

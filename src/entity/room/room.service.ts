@@ -11,12 +11,14 @@ export class RoomService extends TypeOrmCrudService<Room> {
     super(repo);
   }
 
-  getRoomsWithFuturePurchases(ids: number[]): Promise<Room[]> {
+  async getRoomsWithFuturePurchases(ids: number[]): Promise<Room[]> {
     return this.repo.createQueryBuilder('room')
       .where('room.id IN (:...ids)', { ids })
       .leftJoinAndSelect('room.purchases', 'purchase',
         'purchase.status IN (:...statuses) AND purchase.termTo > :now_date',
         { statuses: activePurchaseStatuses, now_date: new Date() })
+      .leftJoinAndSelect('room.hotel', 'hotel')
+      .leftJoinAndSelect('hotel.region', 'region')
       .getMany();
   }
 }
