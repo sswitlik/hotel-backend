@@ -3,10 +3,14 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typ
 import { Room } from '../room/room.entity';
 import { HotelLocation } from './_additionals/hotel-location.entity';
 import { Region } from '../region/region.entity';
-import { ArrayMinSize, IsDefined } from 'class-validator';
+import { ArrayMinSize, IsDefined, IsString } from 'class-validator';
 
 @Entity()
 export class Hotel extends BaseEntity {
+  @IsString()
+  @Column()
+  name: string;
+
   @Column('text')
   description: string;
 
