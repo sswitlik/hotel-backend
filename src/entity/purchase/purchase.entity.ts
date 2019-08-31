@@ -50,4 +50,7 @@ export class Purchase extends BaseEntity {
 
   @OneToMany(type => Payment, payment => payment.purchase)
   payments: Payment[];
+
+  @Column()
+  price: number;
 }

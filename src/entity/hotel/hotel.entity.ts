@@ -3,12 +3,14 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typ
 import { Room } from '../room/room.entity';
 import { HotelLocation } from './_additionals/hotel-location.entity';
 import { Region } from '../region/region.entity';
+import { ArrayMinSize, IsDefined } from 'class-validator';
 
 @Entity()
 export class Hotel extends BaseEntity {
   @Column('text')
   description: string;
 
+  @ArrayMinSize(1)
   @OneToMany(type => Room, room => room.hotel, { cascade: true })
   rooms: Room[];
 
@@ -16,9 +18,7 @@ export class Hotel extends BaseEntity {
   @JoinTable()
   locations: HotelLocation[];
 
-  // @ManyToMany(type => Vacation, vacation => vacation.hotels)
-  // vacations: Vacation[];
-
+  @IsDefined()
   @ManyToOne(type => Region, region => region.hotels)
   region: Region;
 }

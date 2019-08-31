@@ -6,11 +6,12 @@ import { PurchaseService } from './purchase.service';
 import { AuthModule } from '../../modules/auth/auth.module';
 import { Client } from '../client/client.entity';
 import { RoomModule } from '../room/room.module';
+import { Vacation } from '../travel-product/vacation.entity';
 
 @Module({
   imports: [
     RoomModule,
-    TypeOrmModule.forFeature([Purchase, Client]),
+    TypeOrmModule.forFeature([Purchase, Client, Vacation]),
     AuthModule,
   ],
   controllers: [PurchaseController],

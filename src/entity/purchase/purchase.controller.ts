@@ -49,9 +49,7 @@ export class PurchaseController {
         participants: [],
         // start: reservation
         status: PurchaseStatus.RESERVED,
-        id: undefined,
-        payments: [],
-      },
+      } as Purchase,
     };
 
     ResponseModel.tryCatch(res, () => this.service.buyProduct(body));

@@ -9,4 +9,7 @@ export class PaymentService extends TypeOrmCrudService<Payment> {
     super(repo);
   }
 
+  async registerPayment(payment: Payment) {
+
+  }
 }

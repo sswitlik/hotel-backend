@@ -14,6 +14,9 @@ import { EmployeeAndMore } from '../../modules/users/_additionals/user-role.enum
       rooms: {
         eager: true,
       },
+      region: {
+        eager: true,
+      },
     },
   },
   routes: {

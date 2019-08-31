@@ -10,9 +10,13 @@ import { PurchaseModule } from './entity/purchase/purchase.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { RolesGuard } from './modules/auth/roles.guard';
 import { ClientModule } from './entity/client/client.module';
+import { PaymentModule } from './entity/payment/payment.module';
+import { RegionModule } from './entity/region/region.module';
 
 @Module({
   imports: [
+    RegionModule,
+    PaymentModule,
     UsersModule,
     PurchaseModule,
     AuthModule,

@@ -9,16 +9,20 @@ import { RoomService } from '../room/room.service';
 import { getWithDefault } from '../../modules/functions/get-with-default.function';
 import { PurchaseStatus } from './_additionals/purchase-status.enum';
 import { Room } from '../room/room.entity';
+import { Vacation } from '../travel-product/vacation.entity';
 
 @Injectable()
 export class PurchaseService extends TypeOrmCrudService<Purchase> {
   constructor(@InjectRepository(Purchase) repo,
               @InjectRepository(Client) private clientRepo: Repository<Client>,
+              @InjectRepository(Vacation) private vacationRepo: Repository<Vacation>,
               private roomService: RoomService) {
     super(repo);
   }
 
   async buyProduct(input: BuyProductInput) {
+    console.log(await this.vacationRepo.findOne(input.purchase.product.id));
+    return null;
     await this.validatePurchaseInput(input);
 
     let client = (await this.clientRepo.findByIds([getWithDefault(() => input.clientData.id)]))[0];
@@ -29,6 +33,7 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
     input.purchase.status = PurchaseStatus.RESERVED;
     input.purchase.client = client;
     const newlyPurchase = Object.assign(new Purchase(), input.purchase);
+    newlyPurchase.price = 100;
     await this.repo.save(newlyPurchase);
 
     return {
