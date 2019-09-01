@@ -11,6 +11,5 @@ export class Payment extends BaseEntity {
 
   @IsCurrency()
   @Column()
-  quantity: number;
-
+  quantity: string;
 }

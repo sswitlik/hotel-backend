@@ -13,6 +13,10 @@ import { Payment } from '../payment/payment.entity';
 @Entity()
 export class Purchase extends BaseEntity {
 
+  static paymentsSum(purchase: Purchase): number {
+    return purchase.payments.reduce((previousValue, currentValue) => previousValue + Number(currentValue.quantity), 0);
+  }
+
   static isCollision(purchase1: Purchase, purchase2: Purchase) {
     return !(purchase1.termFrom > purchase2.termTo || purchase1.termTo < purchase2.termFrom);
   }
@@ -52,5 +56,6 @@ export class Purchase extends BaseEntity {
   payments: Payment[];
 
   @Column()
-  price: number;
+  price: string;
+
 }

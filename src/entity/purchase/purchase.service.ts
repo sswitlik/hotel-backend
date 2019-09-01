@@ -34,13 +34,36 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
     input.purchase.status = PurchaseStatus.RESERVED;
     input.purchase.client = client;
     const newlyPurchase = Object.assign(new Purchase(), input.purchase);
-    newlyPurchase.price = 100;
+    newlyPurchase.price = '100.00';
     await this.repo.save(newlyPurchase);
 
     return {
       purchase: newlyPurchase,
       clientData: client,
     };
+  }
+
+  getPurchaseWithPayments(id: number) {
+    return this.repo.createQueryBuilder('purchase')
+      .where('purchase.id = :id', { id })
+      .leftJoinAndSelect('purchase.payments', 'payment')
+      .getOne();
+  }
+
+  async setPurchaseToPaid(purchase: Purchase) {
+    return this.changePurchaseStatus(purchase, PurchaseStatus.RESERVED, PurchaseStatus.PAID);
+  }
+
+  async setPurchaseToResigned(purchase: Purchase) {
+    return this.changePurchaseStatus(purchase, PurchaseStatus.RESERVED, PurchaseStatus.RESIGNED);
+  }
+
+  async setPurchaseToCancelled(purchase: Purchase) {
+    return this.changePurchaseStatus(purchase, PurchaseStatus.PAID, PurchaseStatus.CANCELLED);
+  }
+
+  _getOne(id: number): Promise<Purchase> {
+    return this.repo.findOne(id);
   }
 
   private async validatePurchaseInput(input: BuyProductInput) {
@@ -63,5 +86,15 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
     if (!(rooms.reduce((prev, curr) => prev + curr.personNumber, 0) >= participants.length)) {
       throw new Error('Validation: Sum of rooms space must grater or equal than number of participants');
     }
+  }
+
+  private async changePurchaseStatus(purchase: Purchase, from: PurchaseStatus, to: PurchaseStatus) {
+    let result = purchase;
+    if (purchase.status === from) {
+      purchase.status = to;
+      result = await this.repo.save(purchase);
+    }
+    return result;
+
   }
 }

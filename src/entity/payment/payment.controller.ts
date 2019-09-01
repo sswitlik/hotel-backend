@@ -3,6 +3,8 @@ import { Purchase } from '../purchase/purchase.entity';
 import { Crud } from '@nestjsx/crud';
 import { Payment } from './payment.entity';
 import { PaymentService } from './payment.service';
+import { Roles } from '../../modules/auth/roles.guard';
+import { UserRole } from '../../modules/users/_additionals/user-role.enum';
 
 @Crud({
   model: {
@@ -28,6 +30,7 @@ export class PaymentController {
   }
 
   @Post('register-payment')
+  @Roles(UserRole.GUEST, UserRole.ANONYMUS)
   registerPayment(@Body() body: Payment) {
     return this.service.registerPayment(body);
   }

@@ -1,5 +1,5 @@
 import { Crud } from '@nestjsx/crud';
-import { Body, Controller, Headers, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
 import { Purchase } from './purchase.entity';
 import { BuyProductInput } from './_additionals/buy-product-input.model';
@@ -20,6 +20,12 @@ import { ResponseModel } from '../../modules/response/response.model';
         eager: true,
       },
       product: {
+        eager: true,
+      },
+      payments: {
+        eager: true,
+      },
+      client: {
         eager: true,
       },
     },
@@ -53,5 +59,15 @@ export class PurchaseController {
     };
 
     ResponseModel.tryCatch(res, () => this.service.buyProduct(body));
+  }
+
+  @Get('resign/:id')
+  async resignPurchase(@Param('id') id: string) {
+    return this.service.setPurchaseToResigned(await this.service._getOne(Number(id)));
+  }
+
+  @Get('cancel/:id')
+  async cancelPurchae(@Param('id') id: string) {
+    return this.service.setPurchaseToCancelled(await this.service._getOne(Number(id)));
   }
 }

@@ -5,9 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
 import { Purchase } from '../purchase/purchase.entity';
+import { PurchaseModule } from '../purchase/purchase.module';
 
 @Module({
   imports: [
+    PurchaseModule,
     TypeOrmModule.forFeature([Payment, Purchase]),
     AuthModule,
   ],
