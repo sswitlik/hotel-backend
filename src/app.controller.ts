@@ -5,7 +5,7 @@ import { AuthService } from './modules/auth/auth.service';
 import { Roles, RolesGuard } from './modules/auth/roles.guard';
 import { UserRole } from './modules/users/_additionals/user-role.enum';
 
-@Controller()
+@Controller('api')
 export class AppController {
   constructor(private readonly appService: AppService,
               private authService: AuthService) {
