@@ -9,7 +9,7 @@ export class Client extends BaseEntity {
   @Column({ nullable: true })
   address: string;
 
-  @IsEmail({ allow_display_name: true }, { message: 'lol, zly mejl' })
+  @IsEmail({ allow_display_name: true })
   @Column({ nullable: true })
   email: string;
 
