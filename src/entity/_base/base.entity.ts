@@ -6,6 +6,10 @@ export class BaseEntity {
     return Object.assign(new this(), source) as T;
   }
 
+  static getFields<T extends BaseEntity>(...fields: (keyof T)[]): string[] {
+    return [...fields] as string[];
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 }

@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './modules/auth/auth.service';
 import { Roles, RolesGuard } from './modules/auth/roles.guard';
 import { UserRole } from './modules/users/_additionals/user-role.enum';
 import { UsersService } from './modules/users/users.service';
+import { RequestQueryParser } from '@nestjsx/crud-request';
 
 @Controller('api')
 export class AppController {
@@ -30,5 +31,17 @@ export class AppController {
   @Get('me')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Get('test-parse')
+  testParse(@Query() query) {
+    console.log(query);
+    console.log(typeof query);
+    console.log('________');
+
+    console.log(RequestQueryParser.create().parseQuery(query));
+    console.log(RequestQueryParser.create().parseQuery(query).getParsed());
+
+    return RequestQueryParser.create().parseQuery(query);
   }
 }
