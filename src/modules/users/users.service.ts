@@ -32,6 +32,7 @@ export class UsersService extends TypeOrmCrudService<User> {
   async findByUsername(username: string): Promise<User | undefined> {
     return this.repo.createQueryBuilder('user')
       .where('user.username = :username', { username })
+      .leftJoinAndSelect('user.client', 'client')
       .getOne();
   }
 
