@@ -24,7 +24,7 @@ import { UserRole } from '../../modules/users/_additionals/user-role.enum';
     },
   },
 })
-@Controller('payment')
+@Controller('api/payment')
 export class PaymentController {
   constructor(public service: PaymentService) {
   }

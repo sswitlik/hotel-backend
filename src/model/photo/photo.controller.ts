@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { PhotoService } from './photo.service';
 
-@Controller('photo')
+@Controller('api/photo')
 export class PhotoController {
   constructor(private photoService: PhotoService) {
   }

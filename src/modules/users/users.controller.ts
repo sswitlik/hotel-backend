@@ -10,7 +10,7 @@ import { Crud } from '@nestjsx/crud';
     type: User,
   },
 })
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
   constructor(private service: UsersService) {
   }

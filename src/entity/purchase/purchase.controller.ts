@@ -31,7 +31,7 @@ import { ResponseModel } from '../../modules/response/response.model';
     },
   },
 })
-@Controller('purchase')
+@Controller('api/purchase')
 export class PurchaseController {
   constructor(public service: PurchaseService) {
   }

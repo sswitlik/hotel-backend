@@ -18,7 +18,7 @@ import { Vacation } from './vacation.entity';
     },
   },
 })
-@Controller('vacation')
+@Controller('api/vacation')
 export class VacationController {
   constructor(public service: VacationService) {
   }

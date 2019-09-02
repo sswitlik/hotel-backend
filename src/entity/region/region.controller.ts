@@ -17,7 +17,7 @@ import { IsUniqueGuard, UniquenessRepo } from '../../modules/validators/is-uniqu
     },
   },
 })
-@Controller('region')
+@Controller('api/region')
 export class RegionController {
   constructor(public service: RegionService) {
   }

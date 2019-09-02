@@ -30,7 +30,7 @@ import { IsUniqueGuard, UniquenessRepo } from '../../modules/validators/is-uniqu
     },
   },
 })
-@Controller('hotel')
+@Controller('api/hotel')
 export class HotelController {
   constructor(public service: HotelService) {
   }

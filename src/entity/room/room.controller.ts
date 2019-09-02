@@ -17,6 +17,6 @@ import { Room } from './room.entity';
     },
   },
 })
-@Controller('rooms')
+@Controller('api/rooms')
 export class RoomController {
 }

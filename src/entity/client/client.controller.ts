@@ -18,7 +18,7 @@ import { Client } from './client.entity';
     },
   },
 })
-@Controller('client')
+@Controller('api/client')
 export class ClientController {
   constructor(public service: ClientService) {
   }
