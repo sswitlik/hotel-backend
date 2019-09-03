@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
-import { BaseEntity } from '../_base/base.entity';
 import { Purchase } from '../purchase/purchase.entity';
 import { IsEmail } from 'class-validator';
 import { User } from '../../modules/users/user.entity';
+import { Person } from '../_base/person.entity';
 
 @Entity()
-export class Client extends BaseEntity {
+export class Client extends Person {
   @Column({ nullable: true })
   address: string;
 

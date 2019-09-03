@@ -9,6 +9,11 @@ import { Crud } from '@nestjsx/crud';
   model: {
     type: User,
   },
+  query: {
+    join: {
+      client: {},
+    },
+  },
 })
 @Controller('api/users')
 export class UsersController {

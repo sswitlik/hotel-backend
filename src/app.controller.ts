@@ -22,7 +22,6 @@ export class AppController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() req) {
-    console.log(req);
     return this.authService.login(await this.usersService.findByUsername(req.username));
   }
 
@@ -35,13 +34,6 @@ export class AppController {
 
   @Get('test-parse')
   testParse(@Query() query) {
-    console.log(query);
-    console.log(typeof query);
-    console.log('________');
-
-    console.log(RequestQueryParser.create().parseQuery(query));
-    console.log(RequestQueryParser.create().parseQuery(query).getParsed());
-
     return RequestQueryParser.create().parseQuery(query);
   }
 }

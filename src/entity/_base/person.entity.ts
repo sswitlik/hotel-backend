@@ -9,7 +9,7 @@ export abstract class Person extends BaseEntity {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Type(() => Date)
   birthDate: string;
 }
