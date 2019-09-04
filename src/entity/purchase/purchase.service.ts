@@ -12,6 +12,8 @@ import { Vacation } from '../travel-product/vacation.entity';
 
 @Injectable()
 export class PurchaseService extends TypeOrmCrudService<Purchase> {
+  readonly DAY = 24 * 3600 * 1000;
+
   constructor(@InjectRepository(Purchase) repo,
               @InjectRepository(Client) private clientRepo: Repository<Client>,
               @InjectRepository(Vacation) private vacationRepo: Repository<Vacation>,
@@ -36,6 +38,8 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
     input.purchase.status = PurchaseStatus.RESERVED;
     input.purchase.client = client;
     const newlyPurchase = Object.assign(new Purchase(), input.purchase);
+
+    const days = (new Date(input.purchase.termTo).getTime() - new Date(input.purchase.termFrom).getTime()) / this.DAY;
     newlyPurchase.price = input.purchase.rooms
       .reduce((previousValue, currentValue) => previousValue + Number(currentValue.pricePerDay), 0)
       .toFixed(2);

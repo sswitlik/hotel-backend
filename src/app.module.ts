@@ -12,6 +12,9 @@ import { RolesGuard } from './modules/auth/roles.guard';
 import { ClientModule } from './entity/client/client.module';
 import { PaymentModule } from './entity/payment/payment.module';
 import { RegionModule } from './entity/region/region.module';
+import { Region } from './entity/region/region.entity';
+import { Vacation } from './entity/travel-product/vacation.entity';
+import { Hotel } from './entity/hotel/hotel.entity';
 
 @Module({
   imports: [
@@ -31,8 +34,9 @@ import { RegionModule } from './entity/region/region.module';
       password: 'admin',
       database: 'hotels',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false,
     }),
+    TypeOrmModule.forFeature([Region, Hotel, Vacation]),
   ],
   controllers: [AppController],
   providers: [

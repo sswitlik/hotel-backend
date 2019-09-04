@@ -3,13 +3,15 @@ import { BaseEntity } from '../_base/base.entity';
 import { Hotel } from '../hotel/hotel.entity';
 import { RoomEquipment } from './_additionals/room-equipment.entity';
 import { Purchase } from '../purchase/purchase.entity';
+import { IsNumber } from 'class-validator';
 
 @Entity()
 export class Room extends BaseEntity {
   @Column()
   personNumber: number;
 
-  @Column()
+  @IsNumber()
+  @Column('decimal')
   pricePerDay: number;
 
   @ManyToOne(type => Hotel, hotel => hotel.rooms)
