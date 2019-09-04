@@ -9,6 +9,9 @@ export class Room extends BaseEntity {
   @Column()
   personNumber: number;
 
+  @Column()
+  pricePerDay: number;
+
   @ManyToOne(type => Hotel, hotel => hotel.rooms)
   hotel: Hotel;
 

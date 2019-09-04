@@ -36,7 +36,10 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
     input.purchase.status = PurchaseStatus.RESERVED;
     input.purchase.client = client;
     const newlyPurchase = Object.assign(new Purchase(), input.purchase);
-    newlyPurchase.price = '100.00';
+    newlyPurchase.price = input.purchase.rooms
+      .reduce((previousValue, currentValue) => previousValue + Number(currentValue.pricePerDay), 0)
+      .toFixed(2);
+
     await this.repo.save(newlyPurchase);
 
     return {
