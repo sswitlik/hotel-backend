@@ -22,6 +22,8 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
   async buyProduct(input: BuyProductInput) {
     input.purchase.product = await this.vacationRepo.findOne(input.purchase.product.id);
     input.purchase.rooms = await this.roomService.getRoomsWithFuturePurchases(input.purchase.rooms.map(room => room.id));
+    input.purchase.termFrom = new Date(input.purchase.termFrom);
+    input.purchase.termTo = new Date(input.purchase.termTo);
     // return input;
 
     await this.validatePurchaseInput(input);
@@ -73,19 +75,24 @@ export class PurchaseService extends TypeOrmCrudService<Purchase> {
     const rooms = purchase.rooms;
 
     const roomsOk = !rooms.some(room => {
-      return room.purchases.some(roomPurchase => Purchase.isCollision(purchase, roomPurchase));
+      return room.purchases.some(roomPurchase => {
+        if (Purchase.isCollision(purchase, roomPurchase)) {
+          throw new Error(`Validation: Room is not free in this term: ${roomPurchase}`);
+        }
+        return Purchase.isCollision(purchase, roomPurchase);
+      });
+
     });
-    if (!roomsOk) {
-      throw new Error('Validation: Room is not free in this term');
-    }
 
     if (!rooms.every(room => room.hotel.region.id === product.accomodations[0].region.id)) {
       throw new Error('Validation: Each room must be in hotel of selected region');
     }
 
-    if (!(rooms.reduce((prev, curr) => prev + curr.personNumber, 0) >= participants.length)) {
-      throw new Error('Validation: Sum of rooms space must grater or equal than number of participants');
-    }
+    // should check in all hotel rooms
+    // const sum = rooms.reduce((prev, curr) => prev + curr.personNumber, 0);
+    // if (!(sum >= participants.length)) {
+    //   throw new Error(`Validation: Sum of rooms space (${sum}) must grater or equal than number of participants (${participants.length})`);
+    // }
   }
 
   private async changePurchaseStatus(purchase: Purchase, from: PurchaseStatus, to: PurchaseStatus) {
