@@ -30,7 +30,7 @@
     "@nestjsx/crud-typeorm": "^4.2.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.10.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
